@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Management</title>
+  <style>
+    .card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>User Management</h2>
+  
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" required>
+  </div>
+  <div>
+    <label for="profession">Profession:</label>
+    <select id="profession" required>
+      <option value="">Select Profession</option>
+      <option value="developer">Developer</option>
+      <option value="admin">Admin</option>
+    </select>
+  </div>
+  <div>
+    <label for="age">Age:</label>
+    <input type="number" id="age" required>
+  </div>
+  <div>
+    <button onclick="addUser()">Add User</button>
+  </div>
+
+  <h3>All Users</h3>
+  <div id="userList"></div>
+
+  <h3>Filter Users</h3>
+  <div>
+    <label for="filterProfession">Filter by Profession:</label>
+    <select id="filterProfession">
+      <option value="">Select Profession</option>
+      <option value="developer">Developer</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button onclick="filterUsers()">Filter</button>
+  </div>
+
+  <h3>Filtered Users</h3>
+  <div id="filteredUserList"></div>
+
+  <script>
+    // Array to store the users
+    var users = [];
+
+    function addUser() {
+      var name = document.getElementById('name').value;
+      var profession = document.getElementById('profession').value;
+      var age = document.getElementById('age').value;
+
+      if (name && profession && age) {
+        var user = {
+          name: name,
+          profession: profession,
+          age: age
+        };
+
+        users.push(user);
+        showAllUsers();
+        clearFields();
+      } else {
+        alert('Please fill in all the fields');
+      }
+    }
+
+    function showAllUsers() {
+      var userList = document.getElementById('userList');
+      userList.innerHTML = '';
+
+      users.forEach(function(user) {
+        var card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+          <p><strong>Name:</strong> ${user.name}</p>
+          <p><strong>Profession:</strong> ${user.profession}</p>
+          <p><strong>Age:</strong> ${user.age}</p>
+        `;
+        userList.appendChild(card);
+      });
+    }
+
+    function clearFields() {
+      document.getElementById('name').value = '';
+      document.getElementById('profession').value = '';
+      document.getElementById('age').value = '';
+    }
+
+    function filterUsers() {
+      var profession = document.getElementById('filterProfession').value;
+
+      if (profession) {
+        var filteredUsers = users.filter(function(user) {
+          return user.profession === profession;
+        });
+
+        var filteredUserList = document.getElementById('filteredUserList');
+        filteredUserList.innerHTML = '';
+
+        filteredUsers.forEach(function(user) {
+          var card = document.createElement('div');
+          card.classList.add('card');
+          card.innerHTML = `
+            <p><strong>Name:</strong> ${user.name}</p>
+            <p><strong>Profession:</strong> ${user.profession}</p>
+            <p><strong>Age:</strong> ${user.age}</p>
+          `;
+          filteredUserList.appendChild(card);
+        });
+      } else {
+        alert('Please select a profession before filtering');
+      }
+    }
+  </script>
+</body>
+</html>
